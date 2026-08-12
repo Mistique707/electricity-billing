@@ -1,6 +1,0 @@
-com\electricity\dao\UserDAO.class
-com\electricity\util\PasswordUtil.class
-com\electricity\controller\LoginServlet.class
-com\electricity\controller\LogoutServlet.class
-com\electricity\controller\RegisterServlet.class
-com\electricity\util\DBConnection.class
