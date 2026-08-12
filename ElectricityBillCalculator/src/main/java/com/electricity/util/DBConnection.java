@@ -6,8 +6,11 @@ import java.sql.SQLException;
 
 public class DBConnection {
 
+    // XAMPP's MySQL (MariaDB) defaults: port 3306, user "root",
+    // empty password. Change the port here if you moved XAMPP's
+    // MySQL off 3306.
     private static final String URL =
-            "jdbc:mysql://localhost:3307/electricity_db";
+            "jdbc:mysql://localhost:3306/electricity_db";
 
     private static final String USER = "root";
 

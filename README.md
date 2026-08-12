@@ -31,9 +31,9 @@ The rate is **telescopic**: e.g. for 275 units the first 50 are billed at
 
 ## Tech Stack
 
-- Java 8+ / Jakarta `javax.servlet` 4.0.1 (Tomcat 8.5/9)
+- Java 8+ / `javax.servlet` 4.0.1 (Tomcat 8.5/9)
 - JSP + Bootstrap 5
-- MySQL (JDBC via `mysql-connector-j`)
+- MySQL / MariaDB via **XAMPP** (JDBC through `mysql-connector-j`)
 - Maven (WAR packaging)
 
 ## Project Structure
@@ -66,48 +66,67 @@ ElectricityBillCalculator/
         └── WEB-INF/web.xml
 ```
 
-## Setup
+## Setup (XAMPP)
 
-### 1. Database
+> XAMPP provides the **MySQL/MariaDB** backend. Java servlets still need a
+> servlet container, so add **Tomcat** — either the official *Tomcat
+> add-on for XAMPP* (appears in the XAMPP Control Panel) or a standalone
+> Apache Tomcat 8.5 / 9. Tomcat 10+ will **not** work as-is (it uses the
+> `jakarta.*` API, this project uses `javax.*`).
 
-Ensure MySQL is running on **port 3307** (or edit
-`DBConnection.java` to match your setup), then run:
+### 1. Start XAMPP MySQL
+
+Open the **XAMPP Control Panel** and click **Start** next to **MySQL**.
+Defaults are port **3306**, user **root**, **empty** password — which is
+exactly what `DBConnection.java` expects. If you changed MySQL's port in
+XAMPP, update the port in
+`src/main/java/com/electricity/util/DBConnection.java`.
+
+### 2. Create the database
+
+Open **phpMyAdmin** at <http://localhost/phpmyadmin>, go to the
+**Import** tab, choose `ElectricityBillCalculator/database/schema.sql`,
+and click **Go**. This creates the `electricity_db` database with the
+`users` and `bills` tables.
+
+(CLI alternative, from the repo root:)
 
 ```bash
-mysql -u root -P 3307 < ElectricityBillCalculator/database/schema.sql
+C:\xampp\mysql\bin\mysql.exe -u root < ElectricityBillCalculator/database/schema.sql
 ```
 
-This creates the `electricity_db` database with the `users` and `bills`
-tables.
-
-Database credentials live in
-`src/main/java/com/electricity/util/DBConnection.java`:
-
-```
-URL      = jdbc:mysql://localhost:3307/electricity_db
-USER     = root
-PASSWORD = (empty)
-```
-
-### 2. Build
+### 3. Build the WAR
 
 ```bash
 cd ElectricityBillCalculator
 mvn clean package
 ```
 
-This produces `target/ElectricityBillCalculator.war`.
+This produces `target/ElectricityBillCalculator.war`. No Maven? Open the
+`ElectricityBillCalculator` folder as a Maven project in IntelliJ IDEA or
+Eclipse and let the IDE build it.
 
-### 3. Deploy
+### 4. Deploy to Tomcat
 
-Drop the WAR into Tomcat's `webapps/` folder (Tomcat 8.5 or 9, which use
-the `javax.servlet` API), start Tomcat, and open:
+Copy the WAR into Tomcat's `webapps/` folder and start Tomcat:
+
+- **XAMPP Tomcat add-on:** copy the WAR to
+  `C:\xampp\tomcat\webapps\`, then click **Start** next to **Tomcat** in
+  the XAMPP Control Panel.
+- **Standalone Tomcat:** copy the WAR to `<tomcat>\webapps\`, then run
+  `bin\startup.bat`.
+
+Then open:
 
 ```
 http://localhost:8080/ElectricityBillCalculator/
 ```
 
 Register an account, log in, and calculate a bill.
+
+> **Driver note:** XAMPP ships MariaDB. The bundled MySQL Connector/J
+> works with it for this app; if you ever hit a driver-handshake error,
+> swap in the MariaDB JDBC driver, or use MySQL Connector/J 8.0.x.
 
 ## Usage Flow
 

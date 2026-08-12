@@ -1,8 +1,11 @@
 -- ============================================================
---  Electricity Bill Calculator - MySQL schema
+--  Electricity Bill Calculator - MySQL schema (XAMPP / MariaDB)
 --  Matches DBConnection.java :
---    URL  = jdbc:mysql://localhost:3307/electricity_db
---    USER = root
+--    URL  = jdbc:mysql://localhost:3306/electricity_db
+--    USER = root   (empty password)
+--
+--  Easiest import: open phpMyAdmin (http://localhost/phpmyadmin),
+--  go to the "Import" tab, choose this file, and click "Go".
 -- ============================================================
 
 CREATE DATABASE IF NOT EXISTS electricity_db;
