@@ -16,6 +16,21 @@ public class DBConnection {
 
     private static final String PASSWORD = "";
 
+    // Explicitly register the MySQL driver. Under Tomcat, the
+    // connector jar lives in the web app's own classloader, and
+    // DriverManager's automatic (ServiceLoader) registration does
+    // not always kick in there -- which otherwise surfaces as
+    // "No suitable driver found". Loading the class forces it to
+    // register with DriverManager.
+    static {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new ExceptionInInitializerError(
+                    "MySQL JDBC driver not found on the classpath");
+        }
+    }
+
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(
                 URL,

@@ -1,6 +1,8 @@
 # Maven build output
 target/
+build/
 ElectricityBillCalculator/target/
+ElectricityBillCalculator/build/
 ElectricityBillCalculator/warcheck/
 
 # Packaged app
